@@ -34,7 +34,6 @@
         [Required]
         public string Password { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime RegistrationTime { get; set; }
     }
 }

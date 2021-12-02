@@ -1,5 +1,6 @@
 ﻿using BusinessLogicLayer.Interfaces;
 using CommonLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +29,7 @@ namespace OnlineBookStoreApplication.Controllers
         {
             try
             {
+
                 List<Book> books = await this._bookStoreLogic.GetAllBooks();
                 return this.Ok(new { Success = true, Message = "Get all books is successful", Data = books });
             }
@@ -74,6 +76,23 @@ namespace OnlineBookStoreApplication.Controllers
             {
                 Book book = await this._bookStoreLogic.UpdateBook(bookId, updatedBook);
                 return this.Ok(new { Success = true, Message = "Book details updation is successful", Data = book });
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { Success = false, Message = e.Message });
+            }
+        }
+
+
+
+        [HttpDelete]
+        [Route("{bookId:int}")]
+        public async Task<ActionResult> DeleteBook(int bookId)
+        {
+            try
+            {
+                List<Book> books = await this._bookStoreLogic.DeleteBook(bookId);
+                return this.Ok(new { Success = true, Message = "Book deletion is successful", Data = books });
             }
             catch (Exception e)
             {

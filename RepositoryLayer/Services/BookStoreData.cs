@@ -19,24 +19,41 @@
             this._pwdEncryptDecrypt = pwdEncryptDecrypt;
         }
 
-        public Task<Book> AddBook(Book newBook)
+        public async Task<Book> AddBook(Book newBook)
         {
-            throw new NotImplementedException();
+            await this._bookStoreDbContext.Books.AddAsync(newBook);
+            await this._bookStoreDbContext.SaveChangesAsync();
+            return await _bookStoreDbContext.Books.Where(u => u.Title == newBook.Title).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Book>> DeleteBook(int bookId)
+        {
+            var book = await _bookStoreDbContext.Books.Where(u => u.BookId == bookId).FirstOrDefaultAsync();
+            this._bookStoreDbContext.Books.Remove(book);
+            await this._bookStoreDbContext.SaveChangesAsync();
+            return await _bookStoreDbContext.Books.ToListAsync();
         }
 
         public async Task<List<Book>> GetAllBooks()
         {
-            throw new NotImplementedException();
+            return await _bookStoreDbContext.Books.ToListAsync();
         }
 
-        public Task<Book> GetBook(int bookId)
+        public async Task<Book> GetBook(int bookId)
         {
-            throw new NotImplementedException();
+            return await _bookStoreDbContext.Books.Where(u => u.BookId == bookId).FirstOrDefaultAsync();
         }
 
-        public Task<Book> UpdateBook(int bookId, Book updatedBook)
+        public async Task<Book> UpdateBook(int bookId, Book updatedBook)
         {
-            throw new NotImplementedException();
+            var book = await _bookStoreDbContext.Books.Where(u => u.BookId == bookId).FirstOrDefaultAsync();
+            book.Title = updatedBook.Title;
+            book.Author = updatedBook.Author;
+            book.Category = updatedBook.Category;
+            book.Stock = updatedBook.Stock;
+            book.Price = updatedBook.Price;
+            await _bookStoreDbContext.SaveChangesAsync();
+            return await _bookStoreDbContext.Books.Where(u => u.BookId == bookId).FirstOrDefaultAsync();
         }
 
         public async Task<User> UserLogin(UserLogin userLogin)

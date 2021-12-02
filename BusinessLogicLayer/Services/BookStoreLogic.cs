@@ -29,6 +29,18 @@
             }
         }
 
+        public async Task<List<Book>> DeleteBook(int bookId)
+        {
+            try
+            {
+                return await _bookStoreData.DeleteBook(bookId);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public async Task<List<Book>> GetAllBooks()
         {
             try

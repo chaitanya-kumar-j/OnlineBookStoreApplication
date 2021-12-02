@@ -14,5 +14,6 @@
         Task<List<Book>> GetAllBooks();
         Task<Book> GetBook(int bookId);
         Task<Book> UpdateBook(int bookId, Book updatedBook);
+        Task<List<Book>> DeleteBook(int bookId);
     }
 }
