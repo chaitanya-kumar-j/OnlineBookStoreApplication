@@ -29,7 +29,6 @@ namespace OnlineBookStoreApplication.Controllers
         {
             try
             {
-
                 List<Book> books = await this._bookStoreLogic.GetAllBooks();
                 return this.Ok(new { Success = true, Message = "Get all books is successful", Data = books });
             }

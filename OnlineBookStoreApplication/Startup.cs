@@ -3,6 +3,7 @@ namespace OnlineBookStoreApplication
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using BusinessLogicLayer.Interfaces;
     using BusinessLogicLayer.Services;
@@ -16,6 +17,7 @@ namespace OnlineBookStoreApplication
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
+    using Microsoft.IdentityModel.Tokens;
     using Microsoft.OpenApi.Models;
     using RepositoryLayer.Interfaces;
     using RepositoryLayer.Services;
@@ -34,37 +36,62 @@ namespace OnlineBookStoreApplication
         {
             services.AddDbContext<BookStoreDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddControllers();
-            services.AddScoped<IBookStoreData, BookStoreData>();
-            services.AddScoped<IBookStoreLogic, BookStoreLogic>();
-            services.AddScoped<IPwdEncryptDecryptService, PwdEncryptDecryptService>();
-            services.AddSwaggerGen(setup =>
+
+            var secret = this.Configuration.GetSection("JwtConfig").GetSection("SecretKey").Value;
+            var key = Encoding.ASCII.GetBytes(secret);
+            services.AddAuthentication(x =>
             {
-                // Include 'SecurityScheme' to use JWT Authentication
-                var jwtSecurityScheme = new OpenApiSecurityScheme
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    Scheme = "bearer",
-                    BearerFormat = "JWT",
-                    Name = "JWT Authentication",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.Http,
-                    Description = "Enter your JWT Bearer token in the textbox below!",
-
-                    Reference = new OpenApiReference
-                    {
-                        Id = JwtBearerDefaults.AuthenticationScheme,
-                        Type = ReferenceType.SecurityScheme
-                    }
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidIssuer = "localhost",
+                    ValidAudience = "localhost"
                 };
+            });
 
-                setup.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+            services.AddScoped<IBookStoreData, BookStoreData>();
 
-                setup.AddSecurityRequirement(new OpenApiSecurityRequirement
+            services.AddScoped<IBookStoreLogic, BookStoreLogic>();
+
+            services.AddScoped<IPwdEncryptDecryptService, PwdEncryptDecryptService>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "OnlineBookStoreApplication", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    { jwtSecurityScheme, Array.Empty<string>() }
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Scheme = "bearer",
+                    Description = "Please insert JWT token into field"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
                 });
             });
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -7,4 +7,6 @@ use BookStoreDB
 
 select * from Users
 
+select * from Books
+
 insert into Users(FirstName,LastName, ZipCode) values ('dfgds','fgd',234987)

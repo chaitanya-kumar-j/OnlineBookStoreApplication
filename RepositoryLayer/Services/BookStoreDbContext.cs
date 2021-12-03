@@ -1,5 +1,6 @@
 ﻿using CommonLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using RepositoryLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,11 +16,16 @@ namespace RepositoryLayer.Services
 
         public DbSet<Book> Books { get; set; }
 
+        public DbSet<Cart> Carts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
                 .Property(b => b.RegistrationTime)
                 .HasDefaultValueSql("getdate()");
+
+            modelBuilder.Entity<Cart>()
+                .HasKey(c => new { c.UserId, c.BookId });
         }
     }
 }

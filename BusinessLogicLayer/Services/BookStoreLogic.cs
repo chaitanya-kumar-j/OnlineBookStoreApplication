@@ -17,11 +17,35 @@
             this._bookStoreData = bookStoreData;
         }
 
+        public async Task<Cart> AddABookToCart(int userId, int bookId, int numberOfBooks)
+        {
+            try
+            {
+                return await _bookStoreData.AddABookToCart(userId, bookId, numberOfBooks);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public async Task<Book> AddBook(Book newBook)
         {
             try
             {
                 return await _bookStoreData.AddBook(newBook);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task<List<Cart>> DeleteABookInCart(int userId, int bookId)
+        {
+            try
+            {
+                return await _bookStoreData.DeleteABookInCart(userId, bookId);
             }
             catch (Exception e)
             {
@@ -41,6 +65,18 @@
             }
         }
 
+        public async Task<Cart> GetABookInCart(int userId, int bookId)
+        {
+            try
+            {
+                return await _bookStoreData.GetABookInCart(userId, bookId);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public async Task<List<Book>> GetAllBooks()
         {
             try
@@ -53,11 +89,35 @@
             }
         }
 
+        public async Task<List<Cart>> GetAllBooksInCart(int userId)
+        {
+            try
+            {
+                return await _bookStoreData.GetAllBooksInCart(userId);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public async Task<Book> GetBook(int bookId)
         {
             try
             {
                 return await _bookStoreData.GetBook(bookId);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task<Cart> UpdateABookInCart(int userId, int bookId, int numberOfBooks)
+        {
+            try
+            {
+                return await _bookStoreData.UpdateABookInCart(userId, bookId, numberOfBooks);
             }
             catch (Exception e)
             {

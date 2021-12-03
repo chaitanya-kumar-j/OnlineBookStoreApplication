@@ -1,4 +1,4 @@
-﻿namespace CommonLayer.Models
+﻿namespace RepositoryLayer.Entities
 {
     using System;
     using System.Collections.Generic;
