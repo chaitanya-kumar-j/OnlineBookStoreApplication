@@ -9,6 +9,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using RepositoryLayer.Entities;
     using RepositoryLayer.Services;
 
     [Route("api/[controller]")]

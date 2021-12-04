@@ -18,6 +18,8 @@ namespace RepositoryLayer.Services
 
         public DbSet<Cart> Carts { get; set; }
 
+        public DbSet<WishList> WishLists { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
@@ -25,6 +27,9 @@ namespace RepositoryLayer.Services
                 .HasDefaultValueSql("getdate()");
 
             modelBuilder.Entity<Cart>()
+                .HasKey(c => new { c.UserId, c.BookId });
+
+            modelBuilder.Entity<WishList>()
                 .HasKey(c => new { c.UserId, c.BookId });
         }
     }

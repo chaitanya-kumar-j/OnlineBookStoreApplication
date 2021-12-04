@@ -11,6 +11,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using RepositoryLayer.Entities;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -32,7 +33,7 @@
             int userId = Convert.ToInt32(currentUser.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
             try
             {
-                List<Cart> cart = await this._bookStoreLogic.GetAllBooksInCart(userId);
+                List<CartResponse> cart = await this._bookStoreLogic.GetAllBooksInCart(userId);
                 return this.Ok(new { Success = true, Message = "Get all books in cart is successful", Data = cart });
             }
             catch (Exception e)
@@ -50,7 +51,7 @@
             int userId = Convert.ToInt32(currentUser.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
             try
             {
-                Cart cart = await this._bookStoreLogic.GetABookInCart(userId, bookId);
+                CartResponse cart = await this._bookStoreLogic.GetABookInCart(userId, bookId);
                 return this.Ok(new { Success = true, Message = "Get a book in cart is successful", Data = cart });
             }
             catch (Exception e)
@@ -68,7 +69,7 @@
             int userId = Convert.ToInt32(currentUser.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
             try
             {
-                Cart cart = await this._bookStoreLogic.AddABookToCart(userId, bookId, numberOfBooks);
+                CartResponse cart = await this._bookStoreLogic.AddABookToCart(userId, bookId, numberOfBooks);
                 return this.Ok(new { Success = true, Message = "Add a book to cart is successful", Data = cart });
             }
             catch (Exception e)
@@ -86,7 +87,7 @@
             int userId = Convert.ToInt32(currentUser.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
             try
             {
-                Cart cart = await this._bookStoreLogic.UpdateABookInCart(userId, bookId, numberOfBooks);
+                CartResponse cart = await this._bookStoreLogic.UpdateABookInCart(userId, bookId, numberOfBooks);
                 return this.Ok(new { Success = true, Message = "Update a book in cart is successful", Data = cart });
             }
             catch (Exception e)
@@ -104,8 +105,26 @@
             int userId = Convert.ToInt32(currentUser.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
             try
             {
-                List<Cart> carts = await this._bookStoreLogic.DeleteABookInCart(userId, bookId);
+                List<CartResponse> carts = await this._bookStoreLogic.DeleteABookInCart(userId, bookId);
                 return this.Ok(new { Success = true, Message = "Update a book in cart is successful", Data = carts });
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { Success = false, Message = e.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("{bookId:int}/MoveToWishList")]
+        public async Task<ActionResult> MoveABookToWishList(int bookId)
+        {
+            var currentUser = HttpContext.User;
+            int userId = Convert.ToInt32(currentUser.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
+            try
+            {
+                List<CartResponse> carts = await this._bookStoreLogic.MoveABookToWishList(userId, bookId);
+                return this.Ok(new { Success = true, Message = "Move a book in cart to wishlist is successful", Data = carts });
             }
             catch (Exception e)
             {
