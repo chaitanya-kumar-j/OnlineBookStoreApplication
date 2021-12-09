@@ -93,7 +93,7 @@ namespace OnlineBookStoreApplication.Controllers
         }
 
         [Authorize]
-        [HttpDelete("{bookId:int}/MoveToCart")]
+        [HttpPost("{bookId:int}/MoveToCart")]
         public async Task<ActionResult> MoveToCart(int bookId)
         {
             var currentUser = HttpContext.User;

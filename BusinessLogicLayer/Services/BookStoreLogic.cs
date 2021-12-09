@@ -233,5 +233,77 @@
                 throw e;
             }
         }
+
+        public async Task<List<AddressResponse>> GetAllAddresses(int userId)
+        {
+            try
+            {
+                return await _bookStoreData.GetAllAddresses(userId);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task<AddressResponse> GetAnAddress(int userId, int addressId)
+        {
+            try
+            {
+                return await _bookStoreData.GetAnAddress(userId, addressId);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task<List<AddressResponse>> GetAllAddressesOfAType(int userId, int addressTypeId)
+        {
+            try
+            {
+                return await _bookStoreData.GetAllAddressesOfAType(userId, addressTypeId);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task<AddressResponse> AddAnAddress(int userId, AddressInput inputAddress)
+        {
+            try
+            {
+                return await _bookStoreData.AddAnAddress(userId, inputAddress);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task<AddressResponse> UpdateAnAddress(int userId, int addressId, AddressInput updatedAddress)
+        {
+            try
+            {
+                return await _bookStoreData.UpdateAnAddress(userId, addressId, updatedAddress);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task<List<AddressResponse>> DeleteAnAddress(int userId, int addressId)
+        {
+            try
+            {
+                return await _bookStoreData.DeleteAnAddress(userId, addressId);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

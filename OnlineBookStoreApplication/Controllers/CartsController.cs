@@ -115,7 +115,7 @@
         }
 
         [Authorize]
-        [HttpDelete]
+        [HttpPost]
         [Route("{bookId:int}/MoveToWishList")]
         public async Task<ActionResult> MoveABookToWishList(int bookId)
         {

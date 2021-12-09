@@ -20,6 +20,10 @@ namespace RepositoryLayer.Services
 
         public DbSet<WishList> WishLists { get; set; }
 
+        public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<AddressType> AddressTypes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()

@@ -27,5 +27,11 @@
         Task<List<WishListResponse>> RemoveABookFromWishList(int userId, int bookId);
         Task<List<WishListResponse>> MoveToCart(int userId, int bookId);
         Task<List<CartResponse>> MoveABookToWishList(int userId, int bookId);
+        Task<List<AddressResponse>> GetAllAddresses(int userId);
+        Task<AddressResponse> GetAnAddress(int userId, int addressId);
+        Task<List<AddressResponse>> GetAllAddressesOfAType(int userId, int addressTypeId);
+        Task<AddressResponse> AddAnAddress(int userId, AddressInput inputAddress);
+        Task<AddressResponse> UpdateAnAddress(int userId, int addressId, AddressInput updatedAddress);
+        Task<List<AddressResponse>> DeleteAnAddress(int userId, int addressId);
     }
 }

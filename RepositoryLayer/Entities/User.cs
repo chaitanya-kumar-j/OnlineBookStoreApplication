@@ -8,9 +8,7 @@
 
     public class User
     {
-
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
 
         [Required]
@@ -25,8 +23,8 @@
         [Required]
         public string MobileNumber { get; set; }
 
-        [Required]
-        public string Address { get; set; }
+        [ForeignKey("Addresses")]
+        public int AddressId { get; set; }
 
         [Required]
         public int ZipCode { get; set; }
